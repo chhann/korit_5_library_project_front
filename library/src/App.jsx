@@ -11,8 +11,7 @@ function App() {
       
         <RootLayout>
           <RootContainer>
-            <RootSideMenuLeft />
-            <RootHeader />
+            
             <AuthRoute/>
 
           </RootContainer>

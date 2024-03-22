@@ -3,11 +3,14 @@ import * as s from "./style";
 import { sendAuthMailRequest } from "../../apis/api/sendAuthMail";
 import FullSizeLoader from "../../components/FullSizeLoader/FullSizeLoader";
 import { GoCheckCircle } from "react-icons/go";
+import { useMutation, useQueryClient } from "react-query";
+import { useAuthCheck } from "../../hooks/useAuthCheck";
+import { useNavigate } from "react-router-dom";
 
-import { useMutation, useQuery, useQueryClient } from "react-query";
 
-
-function MyPage(props) {
+function MyPage() {
+    useAuthCheck();
+    const navigate = useNavigate();
     const queryClient = useQueryClient();
     const principalData = queryClient.getQueryData("principalQuery");
 
@@ -44,15 +47,15 @@ function MyPage(props) {
                         </div>
                         <div css={s.infoBox}>
                             <div css={s.infoText}>
-                                사용자이름: {principalData.data.username}
+                                사용자이름: {principalData?.data.username}
                             </div>
                             <div css={s.infoText}>
-                                이름: {principalData.data.name}
+                                이름: {principalData?.data.name}
                             </div>
                             <div css={s.emailBox}>
-                                <div css={s.infoText}>이메일 : {principalData.data.email}</div>
+                                <div css={s.infoText}>이메일 : {principalData?.data.email}</div>
                                 {
-                                    principalData.data.authorities.filter(auth => auth.authority === "ROLE_USER").length === 0 
+                                    principalData?.data.authorities.filter(auth => auth.authority === "ROLE_USER").length === 0 
                                     ?
                                     <button css={s.infoButton} onClick={handleSendAuthMailClick}>인증하기</button>
                                     :
@@ -61,7 +64,7 @@ function MyPage(props) {
                             </div>
                             <div css={s.infoBottons}>
                                 <button css={s.infoButton}>정보 수정</button>
-                                <button css={s.infoButton}>비밀번호</button>
+                                <button css={s.infoButton} onClick={() => navigate("/account/edit/password")}>비밀번호</button>
                             </div>
                         </div>
                     </div>

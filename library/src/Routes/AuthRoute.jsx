@@ -9,6 +9,7 @@ import RootHeader from '../components/RootHeader/RootHeader';
 import FullSizeLoader from '../components/FullSizeLoader/FullSizeLoader';
 import MyPage from '../pages/MyPage/MyPage';
 import PageContainer from '../components/PageContainer/PageContainer';
+import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage';
 
 
 // useQuery => GET 요청시에 사용
@@ -47,7 +48,7 @@ function AuthRoute(props) {
         <>
             <RootSideMenuLeft />
             <RootHeader />
-            <PageContainer/>
+            <PageContainer>
             {
                 principalQiery.isLoading 
                 ? <FullSizeLoader size={20}/>
@@ -55,9 +56,10 @@ function AuthRoute(props) {
                     <Route path="/auth/*" element={ <AuthPage /> } />
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="/account/mypage" element={<MyPage/>}/>
+                    <Route path="/account/edit/password" element={<PasswordEditPage/>}/>
                 </Routes>
             }   
-            
+            </PageContainer>
         </>
     );
 }

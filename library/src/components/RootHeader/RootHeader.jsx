@@ -32,7 +32,8 @@ function RootHeader(props) {
             config.headers.Authorization = null;
             return config;
         });
-        queryClient.refetchQueries("principalQuery")
+        queryClient.refetchQueries("principalQuery");
+        window.location.replace("/auth/signin");
     }
 
 

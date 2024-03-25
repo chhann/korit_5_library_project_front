@@ -10,6 +10,7 @@ import FullSizeLoader from '../components/FullSizeLoader/FullSizeLoader';
 import MyPage from '../pages/MyPage/MyPage';
 import PageContainer from '../components/PageContainer/PageContainer';
 import PasswordEditPage from '../pages/PasswordEditPage/PasswordEditPage';
+import BookManagement from '../pages/Admin/BookManageMent/BookManagement';
 
 
 // useQuery => GET 요청시에 사용
@@ -57,6 +58,7 @@ function AuthRoute(props) {
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="/account/mypage" element={<MyPage/>}/>
                     <Route path="/account/edit/password" element={<PasswordEditPage/>}/>
+                    <Route path='/admin/book/management' element={<BookManagement/>} />
                 </Routes>
             }   
             </PageContainer>

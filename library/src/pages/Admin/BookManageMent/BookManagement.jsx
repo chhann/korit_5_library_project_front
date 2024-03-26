@@ -12,10 +12,11 @@ import { storage } from "../../../apis/firebase/config/firebaseConfig";
 import { v4 as uuid} from "uuid";
 import RightTopButton from "../../../components/RightTopButton/RightTopButton";
 import { registerBook } from "../../../apis/api/bookApi";
+import AdminBookSearch from "../../../components/AdminBookSearch/AdminBookSearch";
 
 
 
-function BookManagement(props) {
+function BookManagement() {
     const [ bookTypeOptions, setBookTypeOptions ] = useState([]);
     const [ categoryOptions, setCategoryOptions ] = useState([]);
     const fileRef = useRef();
@@ -29,6 +30,9 @@ function BookManagement(props) {
         useRef(),   // 6 출판사
         useRef()    // 7 URL
     ];
+
+    
+    
 
     const bookTypeQuery = useQuery(
         ["bookTypeQuery"], 
@@ -68,7 +72,7 @@ function BookManagement(props) {
         mutationKey: "registerBookMutation",
         mutationFn: registerBook,
         onSuccess: response => {
-
+            console.log("submit성공" + response);
         },
         onError: error => {
             
@@ -84,7 +88,7 @@ function BookManagement(props) {
     const submit = () => {
         registerBookMutation.mutate({
             isbn: isbn.value,
-            bookTypeId: bookId.value,
+            bookTypeId: bookTypeId.value,
             categoryId: categoryId.value,
             bookName: bookName.value,
             authorName: authorName.value,
@@ -181,7 +185,7 @@ function BookManagement(props) {
                                     <img 
                                         src={
                                             !imgUrl.value 
-                                            ? "https://www.eclosio.ong/en/homepage/map-actions-2-3/"
+                                            ? "https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg"
                                             : imgUrl.value
                                         }       
                                         alt="" 
@@ -196,7 +200,7 @@ function BookManagement(props) {
                                     styles={selectStyle} 
                                     options={bookTypeOptions}
                                     onKeyDown={bookTypeId.handleonkeyDown}
-                                    onInputChange={bookTypeId.handleOnChange}
+                                    onChange={bookTypeId.handleOnChange}
                                     ref={inputRefs[2]}
                                 />
                             </td>
@@ -206,7 +210,7 @@ function BookManagement(props) {
                                     styles={selectStyle} 
                                     options={categoryOptions}
                                     onKeyDown={categoryId.handleonkeyDown}
-                                    onInputChange={categoryId.handleOnChange}
+                                    onChange={categoryId.handleOnChange}
                                     ref={inputRefs[3]}
                                 />
                             </td>
@@ -270,8 +274,12 @@ function BookManagement(props) {
                         </tr>
                     </tbody>
                 </table>
-                <div></div>
             </div>
+                <AdminBookSearch
+                    selectStyle={selectStyle}
+                    bookTypeOptions={bookTypeOptions}
+                    categoryOptions={categoryOptions}
+                />
         </div>
     );
 }

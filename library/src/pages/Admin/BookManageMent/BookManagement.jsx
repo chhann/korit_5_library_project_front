@@ -4,7 +4,7 @@ import Select from "react-select";
 import BookRegisterInput from "../../../components/BookRegisterInput/BookRegisterInput";
 import { useMutation, useQuery } from "react-query";
 import { getAllBookTypeRequest, getAllCategoryRequest } from "../../../apis/api/options";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CiSquarePlus } from "react-icons/ci";
 import { useBookRegisterInput } from "../../../hooks/useBookRegisterInput";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -13,6 +13,8 @@ import { v4 as uuid} from "uuid";
 import RightTopButton from "../../../components/RightTopButton/RightTopButton";
 import { registerBook } from "../../../apis/api/bookApi";
 import AdminBookSearch from "../../../components/AdminBookSearch/AdminBookSearch";
+import { useRecoilState } from "recoil";
+import { selectedBookState } from "../../../atoms/adminSelectedBookAtom";
 
 
 
@@ -105,6 +107,18 @@ function BookManagement() {
     const authorName = useBookRegisterInput(nextInput, inputRefs[6]);
     const publisherName = useBookRegisterInput(nextInput, inputRefs[7]);
     const imgUrl = useBookRegisterInput(submit);
+    const [ selectedBook ] = useRecoilState(selectedBookState);
+
+    useEffect(() => {
+        bookId.setValue(() => selectedBook.bookId);
+        isbn.setValue(() => selectedBook.isbn);
+        bookTypeId.setValue(() => ({value: selectedBook.bookTypeId, label: selectedBook.bookTypeName}));
+        categoryId.setValue(() => ({value: selectedBook.categoryId, label: selectedBook.categoryName}));
+        bookName.setValue(() => selectedBook.bookName);
+        authorName.setValue(() => selectedBook.authorName);
+        publisherName.setValue(() => selectedBook.publisherName);
+        imgUrl.setValue(() => selectedBook.coverImgUrl);
+    },[selectedBook])
 
 
     
@@ -199,6 +213,8 @@ function BookManagement() {
                                 <Select 
                                     styles={selectStyle} 
                                     options={bookTypeOptions}
+                                    value={bookTypeId.value.value}
+                                    inputValue={bookTypeId.value.label}
                                     onKeyDown={bookTypeId.handleonkeyDown}
                                     onChange={bookTypeId.handleOnChange}
                                     ref={inputRefs[2]}
@@ -209,6 +225,8 @@ function BookManagement() {
                                 <Select 
                                     styles={selectStyle} 
                                     options={categoryOptions}
+                                    value={categoryId.value.value}
+                                    inputValue={categoryId.value.label}
                                     onKeyDown={categoryId.handleonkeyDown}
                                     onChange={categoryId.handleOnChange}
                                     ref={inputRefs[3]}

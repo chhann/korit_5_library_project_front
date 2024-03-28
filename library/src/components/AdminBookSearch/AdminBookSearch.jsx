@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import * as s from "./style";
 import Select from "react-select";
-import { useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
 import { useReactSelect } from "../../hooks/useReactSelect";
 import { useBookRegisterInput } from "../../hooks/useBookRegisterInput";
@@ -10,10 +10,10 @@ import { useSearchParams } from "react-router-dom";
 import AdminBookSearchPageNumbers from "../AdminBookSearchPageNumbers/AdminBookSearchPageNumbers";
 import { useRecoilState } from "recoil";
 import { selectedBookState } from "../../atoms/adminSelectedBookAtom";
+import { deleteBooksRequest } from "../../apis/api/bookApi";
 
 
-
-function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions}) {
+function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions, isDelete, setDelete}) {
     const [ searchParams, setSearchParams ] = useSearchParams();
     const searchCount = 20;
     const [ bookList, setBookList ] = useState([]);
@@ -67,6 +67,23 @@ function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions}) {
         }
     )
 
+    const deleteBooksMutation = useMutation({
+        mutationKey: "deleteBooksMutation",
+        mutationFn: deleteBooksRequest,
+        onSuccess: response => {
+            alert("삭제완료.");
+            window.location.replace("/admin/book/management?page=1");
+        }
+    });
+
+    useEffect(() => {
+        if(isDelete) {
+            const deleteBooks = bookList.filter(book => book.checked)
+                                        .map(book => book.bookId);
+            deleteBooksMutation.mutate(deleteBooks);
+        }
+        setDelete(() => false);
+    },[isDelete]);
     
 
     const searchSubmit = () => {
@@ -76,9 +93,9 @@ function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions}) {
         searchBooksQuery.refetch(); 
     }
 
-    const selectedBookType = useReactSelect({value: 0, lavel: "전체"});
-    const selectedCategory = useReactSelect({value: 0, lavel: "전체"});
-    const selectedSearchType = useReactSelect({value: 0, lavel: "전체"});
+    const selectedBookType = useReactSelect({value: 0, label: "전체"});
+    const selectedCategory = useReactSelect({value: 0, label: "전체"});
+    const selectedSearchType = useReactSelect({value: 0, label: "전체"});
     const searchText = useBookRegisterInput(searchSubmit);
 
 
@@ -186,6 +203,7 @@ function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions}) {
 
     },[bookList]);
 
+    console.log(selectedBookType.defalutValue);
     return (
         <div>
             <div css={s.searchBar}>
@@ -198,14 +216,14 @@ function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions}) {
                 />
                     
                 <Select 
-                    tyles={selectStyle} 
+                    styles={selectStyle2} 
                     options={[{value: 0, label: "전체"}, ...categoryOptions]}
                     defaultValue={selectedCategory.defalutValue}
                     value={selectedCategory.option}
                     onChange={selectedCategory.handleOnChange}
                 />
                 <Select 
-                    tyles={selectStyle} 
+                    styles={selectStyle} 
                     options={searchTypeOptions}
                     defaultValue={selectedSearchType.defalutValue}
                     value={selectedSearchType.option}

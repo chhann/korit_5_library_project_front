@@ -45,7 +45,6 @@ function AuthRoute(props) {
     });
 
     return (
-        
         <>
             <RootSideMenuLeft />
             <RootHeader />

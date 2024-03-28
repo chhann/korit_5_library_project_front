@@ -145,23 +145,21 @@ function AdminBookSearch({ selectStyle, bookTypeOptions, categoryOptions}) {
                 />
                     
                 <Select 
-                    tyles={selectStyle} 
+                    styles={selectStyle} 
                     options={[{value: 0, label: "전체"}, ...categoryOptions]}
                     defaultValue={selectedCategory.defalutValue}
                     value={selectedCategory.option}
                     onChange={selectedCategory.handleOnChange}
                 />
                 <Select 
-                    tyles={selectStyle} 
+                    styles={selectStyle} 
                     options={searchTypeOptions}
                     defaultValue={selectedSearchType.defalutValue}
                     value={selectedSearchType.option}
                     onChange={selectedSearchType.handleOnChange}
                 />
-                {/* <input type="checked" onChange={a}/>
-                const a = (e) => {
-                    e.target.chcked
-                } */}
+                <input type="checked" onChange={a}/>
+                
                 <input 
                     css={s.searchInput} 
                     type="text" 

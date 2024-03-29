@@ -9,6 +9,7 @@ function StateStudy(props) {
     console.log("렌더링");
 
     useEffect(() => {
+        console.log("마운트");
         console.log({inputA: inputState});
         return () => {
             console.log("inputA 마운트 해제");
